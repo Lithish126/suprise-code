@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Cute Love 💖</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body {
+  background: radial-gradient(circle at top, #2b1055, #000);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Falling Roses + Hearts */
+.fall-item {
+  position: fixed;
+  top: -20px;
+  animation: fall linear forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* 🎬 Cinematic Slow Slide */
+.fade-in {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 4s ease-in-out, transform 4s ease-in-out;
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Final Message Modal */
+#finalMessage {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,105,180,0.95);
+  padding: 2rem 3rem;
+  border-radius: 1.5rem;
+  text-align: center;
+  z-index: 1000;
+  color: white;
+  box-shadow: 0 0 30px #ff69b4;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+}
+#finalMessage.show {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Buttons container hidden initially */
+#proposalButtons {
+  display: none;
+  margin-top: 1.5rem;
+}
+</style>
+</head>
+
+<body class="text-white min-h-screen flex items-center justify-center px-4">
+
+<div class="max-w-xl w-full text-center">
+
+<!-- INTRO -->
+<div id="intro" class="bg-white bg-opacity-10 backdrop-blur-lg p-8 rounded-2xl">
+  <h1 class="text-2xl font-bold mb-4">Enter My Queen's Name 👑</h1>
+  <input id="nameInput" type="text"
+    class="w-full px-4 py-2 rounded-lg text-black mb-4"
+    placeholder="Her beautiful name..." />
+  <button onclick="startStory()"
+    class="bg-pink-500 px-6 py-2 rounded-lg w-full">
+    Start Our Cute Story 💖
+  </button>
+</div>
+
+<!-- STORY -->
+<div id="story" class="hidden mt-10 space-y-6 relative">
+
+<h1 id="title" class="text-4xl font-bold"></h1>
+
+<!-- Slides -->
+<div class="fade-in bg-white bg-opacity-10 p-4 rounded-xl">
+💞 The first time you smiled at me…
+<p class="text-sm opacity-80">I forgot how to breathe 😳</p>
+</div>
+
+<div class="fade-in bg-white bg-opacity-10 p-4 rounded-xl">
+😂 Our silly fights…
+<p class="text-sm opacity-80">Still my favorite memories.</p>
+</div>
+
+<div class="fade-in bg-white bg-opacity-10 p-4 rounded-xl">
+🌹 The way you say my name…
+<p class="text-sm opacity-80">It sounds like home.</p>
+</div>
+
+<div class="fade-in bg-white bg-opacity-10 p-4 rounded-xl">
+🌈 Even bad days feel better
+<p class="text-sm opacity-80">Because I have you.</p>
+</div>
+
+<div class="fade-in bg-white bg-opacity-10 p-4 rounded-xl">
+💍 I don’t just want today with you…
+<p class="text-sm opacity-80">I want every tomorrow.</p>
+</div>
+
+<div class="fade-in bg-white bg-opacity-10 p-4 rounded-xl">
+🌎 Let’s travel the world together
+<p class="text-sm opacity-80">Collecting memories, not things.</p>
+</div>
+
+<div class="fade-in bg-white bg-opacity-10 p-4 rounded-xl">
+💖 You’re not my favorite person…
+<p class="text-sm opacity-80">You’re my forever person.</p>
+</div>
+
+<!-- Proposal Buttons Container -->
+<div id="proposalButtons" class="space-y-3">
+  <p class="text-xl">Will you stay with me forever? 😍</p>
+  <button onclick="yesClick()"
+    class="bg-green-500 px-6 py-2 rounded-lg">
+    YES 💖
+  </button>
+  <button id="noBtn"
+    onmouseover="moveNo()"
+    class="bg-red-500 px-6 py-2 rounded-lg">
+    No 😜
+  </button>
+</div>
+
+</div>
+</div>
+
+<!-- Final Message Modal -->
+<div id="finalMessage">
+  <h2 class="text-3xl font-bold mb-3">🎉 Happy Birthday My Love 🎂</h2>
+  <p class="text-lg">I Love You So Much ❤️</p>
+  <p class="text-sm mt-2 opacity-80">You are my forever, my always, my everything 💖</p>
+</div>
+
+<script>
+
+let clickCount = 0;
+
+/* Secret Message After 5 Clicks */
+document.body.addEventListener("click", function() {
+  clickCount++;
+  if (clickCount === 5) {
+    confetti({ particleCount: 300, spread: 150 });
+    alert("SECRET MESSAGE 💌\n\nYou are my greatest blessing. I fall for you every single day. ❤️");
+  }
+});
+
+/* Start Story */
+function startStory() {
+  const name = document.getElementById("nameInput").value.trim();
+  if (!name) return alert("Enter her name ❤️");
+
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("story").classList.remove("hidden");
+  document.getElementById("title").innerText =
+    "Happy Birthday, " + name + " 💖";
+
+  revealSlides();
+  startLoveRain();
+
+  confetti({ particleCount: 200, spread: 150 });
+}
+
+/* 🎬 Cinematic Reveal with Buttons After Last Slide */
+function revealSlides() {
+  const slides = document.querySelectorAll(".fade-in");
+  slides.forEach((el,i)=>{
+    setTimeout(()=>{
+      el.classList.add("show");
+      // After last slide, show the YES/NO buttons
+      if(i === slides.length - 1){
+        document.getElementById("proposalButtons").style.display = "block";
+      }
+    }, i*4000);
+  });
+}
+
+/* Falling Hearts + Roses */
+function startLoveRain() {
+  setInterval(() => {
+    const item = document.createElement("div");
+    item.classList.add("fall-item");
+
+    const symbols = ["🌹", "💖"];
+    item.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+
+    item.style.left = Math.random() * 100 + "vw";
+    item.style.fontSize = (Math.random() * 20 + 20) + "px";
+    item.style.animationDuration = (Math.random() * 3 + 5) + "s";
+
+    document.body.appendChild(item);
+    setTimeout(() => item.remove(), 8000);
+
+  }, 400);
+}
+
+/* YES Button - Show Final Centered Message */
+function yesClick() {
+  confetti({ particleCount: 800, spread: 250 });
+
+  const final = document.getElementById("finalMessage");
+  final.style.display = "block";
+
+  setTimeout(() => {
+    final.classList.add("show");
+  }, 100);
+}
+
+/* Running NO Button */
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  btn.style.position = "absolute";
+  btn.style.top = Math.random()*80 + "%";
+  btn.style.left = Math.random()*80 + "%";
+}
+
+</script>
+
+</body>
+</html>
